@@ -1,0 +1,25 @@
+{
+  "scripts": {
+    "build": "tsc && shx chmod +x dist/*.js",
+    "dev": "tsc --watch",
+    "test": "bun test"
+  },
+  "type": "module",
+  "name": "@pc/memory-mcp-sqlite",
+  "bin": {
+    "memory-mcp-sqlite": "dist/index.js"
+  },
+  "license": "MIT",
+  "main": "dist/index.js",
+  "version": "0.1.0",
+  "description": "Fork of @modelcontextprotocol/server-memory with SQLite backend, walk-up resolution, and per-task slicing",
+  "dependencies": {
+    "@cfworker/json-schema": "4.1.1",
+    "@modelcontextprotocol/sdk": "1.29.0"
+  },
+  "devDependencies": {
+    "@types/node": "26.1.1",
+    "bun-types": "^1.3.14",
+    "typescript": "5.6.2"
+  }
+}
