@@ -185,6 +185,17 @@ if (Want "instructions") {
     }
 }
 
+
+# --- проверка: всё ли действительно скопировано (иначе ненулевой код выхода) ---
+$missing = @()
+if (Want "skills") { foreach ($s in @("memory-mcp","deep-reasoning")) { if (-not (Test-Path (Join-Path $ocDir "skills\$s\SKILL.md"))) { $missing += "skills/$s/SKILL.md" } } }
+if (Want "agents") { if (-not (Test-Path (Join-Path $ocDir "agent\orchestrator.md"))) { $missing += "agent/orchestrator.md" } }
+if ($missing.Count) {
+    Write-Host ("ОШИБКА КОПИРОВАНИЯ: не найдено после установки -> " + ($missing -join ", ")) -ForegroundColor Red
+    Write-Host "Проверь права на запись в ~/.config/opencode и повтори установку." -ForegroundColor Yellow
+    exit 2
+}
+Write-Host "copy-check: all expected files present"
 $cfg | ConvertTo-Json -Depth 10 | Set-Content -Encoding UTF8 $ocJson
 Write-Host "opencode.json обновлён (бэкап рядом)" -ForegroundColor Green
 Write-Host "`nГотово. Перезапусти opencode."
