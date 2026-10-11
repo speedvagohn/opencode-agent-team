@@ -1,4 +1,4 @@
-# install.ps1 — установка agent-team системы (orchestrator pipeline) в opencode
+﻿# install.ps1 — установка agent-team системы (orchestrator pipeline) в opencode
 # Запуск: powershell -ExecutionPolicy Bypass -File install.ps1 [-IncludeUnity] [-Skip <список через запятую: mcp,skills,agents,...>]
 #   -IncludeUnity            добавить MCP unityMCP (нужна запущенная Unity с MCP-плагином)
 #   -Skip agents             не ставить агентов

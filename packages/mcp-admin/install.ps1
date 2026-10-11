@@ -1,4 +1,4 @@
-# install.ps1 — установка MCP-серверов + агента mcp-admin + скиллов
+﻿# install.ps1 — установка MCP-серверов + агента mcp-admin + скиллов
 # Запуск: powershell -ExecutionPolicy Bypass -File install.ps1 [-IncludeUnity] [-Skip <список через запятую: mcp,skills,agents,...>]
 #   -IncludeUnity            добавить MCP unityMCP (нужна запущенная Unity с MCP-плагином)
 #   -Skip admin               не ставить агента mcp-admin

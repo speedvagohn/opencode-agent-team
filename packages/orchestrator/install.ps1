@@ -1,4 +1,4 @@
-# install.ps1 — установка pipeline-агентов (orchestrator/architect/executor/critic/reviewer)
+﻿# install.ps1 — установка pipeline-агентов (orchestrator/architect/executor/critic/reviewer)
 # Идемпотентен. Только файлы агентов, ничего более.
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path

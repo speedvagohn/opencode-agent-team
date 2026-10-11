@@ -1,10 +1,12 @@
 # INSTALL-AGENTS.md — автономная установка команды агентов OpenCode
 
-> **Для агента opencode на машине получателя.** Пользователь вставляет этот текст в чат (или говорит: «прочитай https://raw.githubusercontent.com/speedvagohn/opencode-agent-team/v1.0/INSTALL-AGENTS.md и выполни»). Твоя задача — **выполнить установку самому**, задав пользователю минимум вопросов. Ничего из «ручных шагов» на пользователя не перекладывай, кроме перезапуска приложения в конце.
+> **Для агента opencode на машине получателя.** Пользователь вставляет этот текст в чат (или говорит: «прочитай https://raw.githubusercontent.com/speedvagohn/opencode-agent-team/v1.1/INSTALL-AGENTS.md и выполни»). Твоя задача — **выполнить установку самому**, задав пользователю минимум вопросов. Ничего из «ручных шагов» на пользователя не перекладывай, кроме перезапуска приложения в конце.
 
 ---
 
 ## 0. Границы (соблюдать буквально)
+
+Если ты не можешь открыть ссылку на этот файл (нет инструмента webfetch или сеть закрыта) — попроси пользователя вставить содержимое файла в чат и продолжай работать по нему.
 - **Разрешено:** читать этот файл, клонировать репозиторий, доустанавливать зависимости, запускать `install.ps1`, проверять результат, писать отчёт.
 - **Запрещено:** `git push` и любые изменения remote; запуск opencode с `--auto`; удаление или перезапись существующих чужих агентов/скиллов; выход за пределы задач этого файла; отправка чего-либо в сеть, кроме публикации пакетов npm/PyPI во время установки зависимостей.
 - Если шаг не удался — не подбирай «силой», а доложи и предложи вариант.
@@ -49,27 +51,44 @@ powershell -ExecutionPolicy Bypass -File install.ps1 -Skip "agents,skills,instru
 ```
 
 Дополнительно спроси (только если применимо):
-- **Unity** — задавай вопрос **только если** сам обнаружил установленную Unity (проверка в п.3); при «да» добавь `-IncludeUnity`.
+- **Unity** — задавай вопрос **только если** сам обнаружил установленную Unity (проверка в п.2); при «да» добавь `-IncludeUnity`.
 
-## 2. Получить исходники
+## 2. Предусловия — сначала проверь и почини, потом что-либо качай
+| Что | Проверка | Если нет — твои действия |
+|---|---|---|
+| opencode | приложение/CLI установлено (ты в нём и работаешь) | сообщи, что нужен opencode.ai, и остановись |
+| git | `git --version` | `winget install --id Git.Git -e`. Если winget нет или установка не удалась — **не блокируйся**: работай по запасному пути п.3Б (скачай zip напрямую, git не нужен) |
+| Node.js | `node -v` | `winget install --id OpenJS.NodeJS.LTS -e`, затем перезапусти PowerShell (PATH) и повтори проверку. Нужен **только** если ставим npx-MCP (playwright/context7/sequentialthinking); при `-Skip` этих компонентов — не нужен |
+| PowerShell 5.1+ | `$PSVersionTable.PSVersion` | если ОС не Windows → раздел 8 (ручной путь, делай всё сам) |
+| Chrome или Edge | `Test-Path "C:\Program Files\Google\Chrome\Application\chrome.exe"` / `...Edge\Application\msedge.exe` | нет — всё равно ставь, но предупреди в отчёте: playwright настроен, но без браузера не запустится |
+| MS Office | `Test-Path "...\Microsoft Office\root\Office16\WINWORD.EXE"` (+ Office15/16, x86) | найден → установщик добавит `OfficeMCP`; не найден → пропуск, это норма |
+| Unity | `Test-Path "C:\Program Files\Unity\Hub\Editor"` | найдена → задай вопрос про unityMCP и при «да» передашь `-IncludeUnity` |
+| bun, uv | `bun --version`, `uvx --version` | ставит установщик сам; можешь заранее: `powershell -c "irm bun.sh/install.ps1 \| iex"`, `powershell -c "irm https://astral.sh/uv/install.ps1 \| iex"` |
+
+**Ожидай диалоги подтверждений:** на чистой машине запись в `~/.config/opencode`, `~/tools`, `~/@Browser` идёт **за пределами рабочей папки** opencode, поэтому пользователь увидит несколько запросов разрешения на файловые операции. Это нормально: разрешай пути вида `%USERPROFILE%\.config\opencode\...` и `%USERPROFILE%\tools\...`; всё остальное (сеть, `git push`, `--auto`) по-прежнему запрещено разделом 0.
+
+## 3. Получить исходники
+
+### 3А. Основной путь — git есть
 ```powershell
 $dst = "$env:TEMP\opencode-agent-team-src"
 if (Test-Path $dst) { Remove-Item -Recurse -Force $dst }
-git clone --depth 1 --branch v1.0 https://github.com/speedvagohn/opencode-agent-team.git $dst
+git clone --depth 1 --branch v1.1 https://github.com/speedvagohn/opencode-agent-team.git $dst
+git -C $dst rev-parse --short HEAD      # зафиксируй sha в отчёте
 ```
-Зафиксируй в отчёте, какой коммит установлен: `git -C $dst rev-parse --short HEAD`.
 
-## 3. Предусловия — проверь и почини сам
-| Что | Проверка | Если нет — твои действия |
-|---|---|---|
-| opencode | установленное приложение/CLI | сообщи, что нужен opencode.ai, остановись |
-| git | `git --version` | `winget install --id Git.Git -e` (или попроси поставить вручную) |
-| Node.js | `node -v` | `winget install --id OpenJS.NodeJS.LTS -e`; затем **перезапусти PowerShell-контекст** (PATH) и повтори проверку; без Node MCP не поднимаются |
-| PowerShell 5.1+ | `$PSVersionTable.PSVersion` | если ОС не Windows → переход к разделу 8 (ручной путь, сделай всё сам по нему) |
-| Chrome или Edge | `Test-Path "C:\Program Files\Google\Chrome\Application\chrome.exe"` / `...Edge\Application\msedge.exe` | если нет — всё равно ставь, но в отчёте предупреди: MCP playwright будет настроен, но не запустится без браузера |
-| MS Office | `Test-Path "...\Microsoft Office\root\Office16\WINWORD.EXE"` (и варианты Office15/16/x86) | если найден — установщик сам добавит MCP `OfficeMCP`; если нет — будет пропущено, это норма |
-| Unity | `Test-Path "C:\Program Files\Unity\Hub\Editor"` или `Get-ChildItem "C:\Program Files\Unity*"` | если найдена → задай вопрос 3 |
-| bun, uv | `bun --version`, `uvx --version` | установщик поставит сам; можешь заранее: `powershell -c "irm bun.sh/install.ps1 \| iex"`, `powershell -c "irm https://astral.sh/uv/install.ps1 \| iex"` |
+### 3Б. Запасной путь — git недоступен (чистая машина без git/winget)
+Скачай готовый zip напрямую (git не нужен):
+```powershell
+$zipUrl = "https://raw.githubusercontent.com/speedvagohn/opencode-agent-team/v1.1/dist/<zip-файл>"
+$dst = "$env:TEMP\opencode-agent-team-zip"
+if (Test-Path $dst) { Remove-Item -Recurse -Force $dst }
+New-Item -ItemType Directory -Force -Path $dst | Out-Null
+Invoke-WebRequest -Uri $zipUrl -OutFile "$dst\pkg.zip"
+Expand-Archive "$dst\pkg.zip" -DestinationPath "$dst\pkg" -Force
+```
+`<zip-файл>` по профилю: `agent-team` → `agent-team-handoff.zip`, `orchestrator` → `orchestrator-handoff.zip`, `mcp-admin` → `mcp-admin-handoff.zip`. Дальше работаешь из `$dst\pkg` (там уже лежат `install.ps1`, `agent\`, `skills\`).
+Если и `Invoke-WebRequest` не проходит (прокси/сеть) — попроси пользователя скачать zip вручную по ссылке из README и указать путь.
 
 ## 4. Подготовка файлов под ответ пользователя
 1. Скопируй `packages/<профиль>/` в рабочую папку (например `$env:TEMP\agents-install`).
@@ -78,7 +97,7 @@ git clone --depth 1 --branch v1.0 https://github.com/speedvagohn/opencode-agent-
 
 ## 5. Установка (Windows)
 ```powershell
-powershell -ExecutionPolicy Bypass -File "$env:TEMP\agents-install\install.ps1"   # + -IncludeUnity при нужде
+powershell -ExecutionPolicy Bypass -File "<путь-к-install.ps1>\install.ps1"   # + -IncludeUnity при нужде
 ```
 Что делает скрипт (для твоего отчёта): ставит bun/uv при отсутствии; копирует агентов в `~/.config/opencode/agent`, скиллы — в `skills`, инструкции — в корень конфига; разворачивает Bun+SQLite сервер памяти в `~/tools/memory-mcp` и прогоняет его тесты; создаёт `~/@Browser` и `~/.memory` (catch-all база памяти); дописывает MCP-секции в `~/.config/opencode/opencode.json`, **не трогая существующие**, с бэкапом `opencode.json.bak.*`. Идемпотентен — повторный запуск безопасен.
 
