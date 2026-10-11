@@ -1,7 +1,7 @@
 ---
 description: Исполнитель. Решает одну подзадачу по брифу TASK-NN.md в границах scope, прогоняет verification, сдаёт результат.
 mode: subagent
-model: opencode/longcat-2.5-preview-free
+model: okak7777/qwen3.8-flash
 temperature: 0.1
 permission:
   edit: allow

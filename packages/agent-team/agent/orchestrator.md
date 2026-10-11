@@ -1,7 +1,7 @@
 ---
 description: Агент-посредник (hub). Принимает запросы пользователя, координирует architect/executor/critic/reviewer, ведёт STATE и чекпоинты памяти, запрашивает подтверждения.
 mode: primary
-model: opencode/longcat-2.5-preview-free
+model: okak7777/qwen3.8-max
 temperature: 0.3
 permission:
   edit:

@@ -1,7 +1,7 @@
 ---
 description: Настройка и диагностика MCP-серверов opencode и администрирование Windows-машины: процессы, службы, пакеты, файлы, сеть.
 mode: primary
-model: opencode/longcat-2.5-preview-free
+model: okak7777/qwen3.8-max
 temperature: 0.2
 permission:
   bash:

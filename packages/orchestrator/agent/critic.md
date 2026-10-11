@@ -1,7 +1,7 @@
 ---
 description: Критик. Рецензирует план (SPEC/TASKS) и результаты исполнителей (код+verification). Только замечания, без правок кода.
 mode: subagent
-model: opencode/longcat-2.5-preview-free
+model: okak7777/qwen3.8-max
 temperature: 0.2
 permission:
   edit:
