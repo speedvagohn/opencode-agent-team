@@ -28,6 +28,21 @@
 
 Готовые zip-архивы — в [`dist/`](./dist).
 
+### Выборочная установка (компоненты)
+Установщик принимает `-Skip` со списком через запятую — можно поставить не всё сразу, а только нужное:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File install.ps1                                  # всё
+powershell -ExecutionPolicy Bypass -File install.ps1 -Skip mcp                         # только агенты, без MCP
+powershell -ExecutionPolicy Bypass -File install.ps1 -Skip "memory,office"             # всё, кроме памяти и Office
+powershell -ExecutionPolicy Bypass -File install.ps1 -Skip "agents,skills,memory"      # только MCP-поиск и браузер
+```
+
+Ключи: `mcp` (сразу все MCP), `agents`, `admin`, `skills`, `instructions`, `memory`, `ddg`,
+`playwright`, `context7`, `sequentialthinking`, `office`, `unity`. Зависимости проверяются
+лениво: Node.js нужен только для npx-MCP, bun/uv ставятся сами и только когда нужны,
+поэтому установка «только агенты» работает на машине без Node.js.
+
 ## Роли агентов
 
 | Агент | Назначение |
