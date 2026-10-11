@@ -1,7 +1,7 @@
 ---
 description: Настройка и диагностика MCP-серверов opencode и администрирование Windows-машины: процессы, службы, пакеты, файлы, сеть.
 mode: primary
-model: okak7777/qwen3.8-max
+model: okak7777/qwen3.8-flash
 temperature: 0.2
 permission:
   bash:
