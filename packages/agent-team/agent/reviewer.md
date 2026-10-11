@@ -1,7 +1,7 @@
 ---
 description: Ревьюер. Финальное интеграционное ревью всего проекта: стыки, сквозной сценарий, регресс, документация.
 mode: subagent
-model: opencode/space-bunny-free
+model: opencode/longcat-2.5-preview-free
 temperature: 0.2
 permission:
   edit:

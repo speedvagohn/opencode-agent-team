@@ -29,7 +29,7 @@ powershell -ExecutionPolicy Bypass -File <распакованная\install.ps1
 ## После установки
 **Перезапустить opencode.** Старт: `@orchestrator новый проект, папка <path>, хочу <что>`.
 
-**Модельная политика зашита в агентов**: все 5 = `opencode/space-bunny-free`. Другой провайдер — поправь/удали строки `model:` в agent/*.md.
+**Модельная политика зашита в агентов**: все 5 = `opencode/longcat-2.5-preview-free`. Другой провайдер — поправь/удали строки `model:` в agent/*.md.
 Роли взаимодействуют через файлы `<project>/STATE/` (SPEC/TASKS/PROJECT_STATE) и
 память — при отсутствии memory MCP оркестратор честно деградирует до файлов.
 

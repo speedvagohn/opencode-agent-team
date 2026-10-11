@@ -1,7 +1,7 @@
 ---
 description: Настройка и диагностика MCP-серверов opencode и администрирование Windows-машины: процессы, службы, пакеты, файлы, сеть.
 mode: primary
-model: opencode/space-bunny-free
+model: opencode/longcat-2.5-preview-free
 temperature: 0.2
 permission:
   bash:

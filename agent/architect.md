@@ -1,7 +1,7 @@
 ---
 description: Архитектор. Уточняет требования, пишет SPEC.md и декомпозицию TASK-NN.md с acceptance criteria. Работает только в STATE/.
 mode: subagent
-model: opencode/space-bunny-free
+model: opencode/longcat-2.5-preview-free
 temperature: 0.2
 permission:
   edit:
