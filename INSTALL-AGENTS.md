@@ -1,6 +1,6 @@
 # INSTALL-AGENTS.md — автономная установка команды агентов OpenCode
 
-> **Для агента opencode на машине получателя.** Пользователь вставляет этот текст в чат (или говорит: «прочитай https://raw.githubusercontent.com/speedvagohn/opencode-agent-team/v1.1/INSTALL-AGENTS.md и выполни»). Твоя задача — **выполнить установку самому**, задав пользователю минимум вопросов. Ничего из «ручных шагов» на пользователя не перекладывай, кроме перезапуска приложения в конце.
+> **Для агента opencode на машине получателя.** Пользователь вставляет этот текст в чат (или говорит: «прочитай https://raw.githubusercontent.com/speedvagohn/opencode-agent-team/<ТЕГ>/INSTALL-AGENTS.md и выполни»). Твоя задача — **выполнить установку самому**, задав пользователю минимум вопросов. Ничего из «ручных шагов» на пользователя не перекладывай, кроме перезапуска приложения в конце.
 
 ---
 
@@ -68,19 +68,24 @@ powershell -ExecutionPolicy Bypass -File install.ps1 -Skip "agents,skills,instru
 **Ожидай диалоги подтверждений:** на чистой машине запись в `~/.config/opencode`, `~/tools`, `~/@Browser` идёт **за пределами рабочей папки** opencode, поэтому пользователь увидит несколько запросов разрешения на файловые операции. Это нормально: разрешай пути вида `%USERPROFILE%\.config\opencode\...` и `%USERPROFILE%\tools\...`; всё остальное (сеть, `git push`, `--auto`) по-прежнему запрещено разделом 0.
 
 ## 3. Получить исходники
+### Как определить `<ТЕГ>`
+Подставь версию из ссылки, по которой ты получил эту инструкцию: в адресе вида
+`https://raw.githubusercontent.com/speedvagohn/opencode-agent-team/<ТЕГ>/INSTALL-AGENTS.md`
+это последний сегмент перед `INSTALL-AGENTS.md`. Все команды и ссылки на zip бери **того же тега** —
+артефакты разных тегов несовместимы (в ранних версиях был сломан установщик).
 
 ### 3А. Основной путь — git есть
 ```powershell
 $dst = "$env:TEMP\opencode-agent-team-src"
 if (Test-Path $dst) { Remove-Item -Recurse -Force $dst }
-git clone --depth 1 --branch v1.1 https://github.com/speedvagohn/opencode-agent-team.git $dst
+git clone --depth 1 --branch <ТЕГ> https://github.com/speedvagohn/opencode-agent-team.git $dst
 git -C $dst rev-parse --short HEAD      # зафиксируй sha в отчёте
 ```
 
 ### 3Б. Запасной путь — git недоступен (чистая машина без git/winget)
 Скачай готовый zip напрямую (git не нужен):
 ```powershell
-$zipUrl = "https://raw.githubusercontent.com/speedvagohn/opencode-agent-team/v1.1/dist/<zip-файл>"
+$zipUrl = "https://raw.githubusercontent.com/speedvagohn/opencode-agent-team/<ТЕГ>/dist/<zip-файл>"
 $dst = "$env:TEMP\opencode-agent-team-zip"
 if (Test-Path $dst) { Remove-Item -Recurse -Force $dst }
 New-Item -ItemType Directory -Force -Path $dst | Out-Null
